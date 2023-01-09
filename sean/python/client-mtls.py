@@ -65,29 +65,7 @@ def create_ssl_cert_and_key():
     return key_file, cert_file
 
 # Set up a loop to handle messages from the server
-def receive_messages():
-    while True:
-        try:
-            # Receive a message from the server
-            message = client.recv(1024)
-
-            # If the message is empty, the server has disconnected
-            if not message:
-                print("Server disconnected")
-                client.close()
-                break
-
-            # Decrypt the message and print it
-            message = cipher.decrypt(message).decode("utf-8")
-            print(message)
-        except:
-            # If there is an error, the server has disconnected
-            print("Server disconnected")
-            client.close()
-            break
-
-# Set up a loop to handle messages from the server
-def receive_messages(client, cipher):
+def receive_messages(client,cipher):
     while True:
         try:
             # Receive a message from the server
@@ -134,8 +112,8 @@ def start_client():
 
     # Set up a thread to receive messages from the server
     receive_thread = threading.Thread(target=receive_messages,args=(client,cipher))
+    receive_thread.daemon = True
     receive_thread.start()
-
 
     # Get the client's nickname
     nickname = input("Enter your nickname: ")
