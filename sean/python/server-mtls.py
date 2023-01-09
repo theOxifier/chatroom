@@ -72,7 +72,7 @@ def create_ssl_cert_and_key():
         critical=False,
         # Sign our certificate with our private key
     ).sign(private_key, hashes.SHA256(), default_backend())
-    
+
     # Save the certificate and private key to temporary files
     cert_file = tempfile.NamedTemporaryFile(delete=False)
     cert_file.write(cert.public_bytes(serialization.Encoding.PEM))
@@ -120,7 +120,7 @@ def handle_client(client, cipher):
 
             # Decrypt the message and broadcast it to all clients
             message = cipher.decrypt(message).decode("utf-8")
-            broadcast(cipher.encrypt(f"{nickname}: {message}\n".encode("utf-8")))
+            broadcast(cipher.encrypt(f"{message}\n".encode("utf-8")))
         except:
             # If there is an error, the client has disconnected
             break
@@ -137,25 +137,25 @@ def handle_client(client, cipher):
 # Set up a loop to accept new connections
 def start_server():
     key_file, cert_file = create_ssl_cert_and_key()
-    
+
     # Generate a key for the Fernet cipher
     key = Fernet.generate_key()
-    
+
     # Create a Fernet cipher object
     cipher = Fernet(key)
-    
+
     # Set up the server
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    
+
     # Wrap the socket in a TLS context
     context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
     context.load_cert_chain(certfile=cert_file.name, keyfile=key_file.name)
     server = context.wrap_socket(server, server_side=True)
-    
+
     server.bind(("localhost", 8000))
     server.listen()
     print("Listening for connections on port 8000...")
-    
+
 
     # Set up a signal handler to handle control-c scenario
     signal.signal(signal.SIGINT, handler)
@@ -164,7 +164,7 @@ def start_server():
         client, address = server.accept()
         print(f"Connected to {address[0]}:{address[1]}")
         client.send(key)
-        client.send(cipher.encrypt("Enter your nickname: ".encode("utf-8")))
+#        client.send(cipher.encrypt("Enter your nickname: ".encode("utf-8")))
         # Start a new thread to handle the client
         client_thread = threading.Thread(target=handle_client, args=(client,cipher))
         client_thread.start()

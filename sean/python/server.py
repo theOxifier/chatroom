@@ -73,7 +73,7 @@ def start_server():
         client.send(key)
         client.send(cipher.encrypt("Enter your nickname: ".encode("utf-8")))
         # Start a new thread to handle the client
-        client_thread = threading.Thread(target=handle_client, args=(client,))
+        client_thread = threading.Thread(target=handle_client, args=(client))
         client_thread.start()
 
 def main():
