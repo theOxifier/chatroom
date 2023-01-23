@@ -39,13 +39,19 @@ class ConnectionHandler(socketserver.BaseRequestHandler):
     client.
     """
     def handle(self):
-        # self.request is the TCP socket connected to the client
-        self.data = self.request.recv(1024).strip()
-        print("{} wrote:".format(self.client_address[0]))
-        print(self.data)
+        while True:
+            # self.request is the TCP socket connected to the client
+            self.data = self.request.recv(1024).strip()
 
-        # just send back the same data
-        self.request.sendall(self.data)
+            # If the data is empty, the client has disconnected
+            if not self.data:
+                break
+
+            print("{} wrote:".format(self.client_address[0]))
+            print(self.data)
+
+            # just send back the same data
+            self.request.sendall(self.data)
 
 class Session():
     def __init__(self, session_id):
@@ -84,21 +90,23 @@ class Client():
     def __str__(self):
         return str(self.client_id)
         
-    def client_test(self):
+    def client_session(self):
         HOST, PORT = "localhost", 9999
         data = " ".join(self.client_id)
     
-        # Create a socket (SOCK_STREAM means a TCP socket)
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             # Connect to server and send data
             sock.connect((HOST, PORT))
-            sock.sendall(bytes(data + "\n", "utf-8"))
-    
-            # Receive data from the server and shut down
-            received = str(sock.recv(1024), "utf-8")
-    
-        print("Sent:     {}".format(data))
-        print("Received: {}".format(received))
+            while True:
+                # Create a socket (SOCK_STREAM means a TCP socket)
+                #sock.sendall(bytes(data + "\n", "utf-8"))
+                sock.send(bytes(input("msg: "), "utf-8"))
+
+                # Receive data from the server and shut down
+                received = str(sock.recv(1024), "utf-8")
+
+                print("Sent:     {}".format(data))
+                print("Received: {}".format(received))
     #def receive_messages(client):
     #    while True:
     #        try:
