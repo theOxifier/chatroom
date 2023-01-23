@@ -4,24 +4,26 @@ import chatroom
 
 class PrintTests(unittest.TestCase):
     def setUp(self):
-        self.client = chatroom.Client("1234")
-        self.session = chatroom.Session()
-        client_1 = chatroom.Client("1234")
-        client_2 = chatroom.Client("5678")
-        self.session.attach_client(client_1)
-        self.session.attach_client(client_2)
-        print(self.session)
+        self.session_manager = chatroom.SessionManager("session_1")
+        self.session = chatroom.Session("one")
+        self.client_1 = chatroom.Client("1234")
+        self.client_2 = chatroom.Client("5678")
+
+        self.session.attach_client(self.client_1)
+        self.session.attach_client(self.client_2)
+
+        self.session_manager.attach_session(self.session)
 
     def test_print_session_info(self):
-        print(self.session)
-        self.assertEqual(str(self.session),str(["1234","5678"]))
+        self.assertEqual(str(self.session),"1234 5678")
 
     def test_print_client_info(self):
-        self.assertEqual(str(self.client),"1234")
+        self.assertEqual(str(self.client_1),"1234")
+        self.assertEqual(str(self.client_2),"5678")
 
     def test_print_session_manager_info(self):
-#        self.assertEqual(str(client),"1234")
-        pass
+        print(self.session_manager)
+        self.assertEqual(str(self.session_manager),"session_1 1234 5678")
 
 if __name__ == '__main__':
     unittest.main()

@@ -12,50 +12,49 @@ They want to be able to go to a website. Search for each other's name and initia
 
 '''
 class SessionManager():
-    def __init__(self):
-        self.session_id_list = {}
-        pass
+    def __init__(self, id):
+        self.session_list = []
+        self.id = id
 
     def __str__(self):
-        pass
+        return f"{self.id} {' '.join(map(str,self.session_list))}"
 
-    def create_session(self):
-        pass
+    def attach_session(self, session_id):
+        self.session_list.append(session_id)
 
-    def destroy_session(self):
-        pass
+    def destroy_session(self, session_id):
+        self.session_list.remove(session_id)
 
 class Session():
-    def __init__(self):
+    def __init__(self, session_id):
         self.client_list = []
+        self.session_id = session_id
         pass
 
     def __str__(self):
-        client_ids = []
-        for client in self.client_list:
-           client_ids.append(str(client)) 
-        return f"{client_ids}"
+        return ' '.join(map(str,self.client_list))
 
-    def attach_client(self,client):
+    def attach_client(self, client):
         self.client_list.append(client)
     
-    def detach_client(self,client):
+    def detach_client(self, client):
         self.client_list.append(client)
 
 class Client():
     def __init__(self, client_id):
-        self.client_id = client_id # unique random string
+        self.client_id = client_id
         pass
 
     def __str__(self):
-        return f"{self.client_id}"
+        return str(self.client_id)
 
 def main():
-    client_1 = Client("1234")
-    client_2 = Client("1235")
-    session_1 = Session()
-    session_1.attach_client(client_1)
-    session_1.attach_client(client_2)
+    pass
+#    client_1 = Client("1234")
+#    client_2 = Client("1235")
+#    session_1 = Session()
+#    session_1.attach_client(client_1)
+#    session_1.attach_client(client_2)
 
 if __name__ == "__main__":
     main()
