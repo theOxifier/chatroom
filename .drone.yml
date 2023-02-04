@@ -1,3 +1,4 @@
+---
 kind: pipeline
 name: default
 platform:
@@ -10,4 +11,15 @@ steps:
   commands:
   - pip install -r requirements.txt
   - python -m unittest tests/*
-#  - pytest
+
+---
+kind: pipeline
+type: kubernetes
+name: default
+
+steps:
+- name: test
+  image: python
+  commands:
+  - pip install -r requirements.txt
+  - python -m unittest tests/*
