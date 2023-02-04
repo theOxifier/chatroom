@@ -1,6 +1,6 @@
 ---
 kind: pipeline
-name: default
+name: docker-test
 platform:
   os: linux
   arch: arm64
@@ -15,7 +15,7 @@ steps:
 ---
 kind: pipeline
 type: kubernetes
-name: default
+name: k8s-test
 
 steps:
 - name: test
