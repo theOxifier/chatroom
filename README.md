@@ -1,6 +1,6 @@
-# chatgpt-generated-messaging-service
+# Chatroom cli tool
 goofing around
 
-The idea here is to work with chat gpt to generate code.
-it doesn't have to be exclusively gnerated by chatgpt, but it should
-at some level at least have a starting point in chat gpt.
+Just a for fun python project that would be a chatroom on the cli.
+
+Planning on using it as a test bed for a bunch of different projects and libraries i want to try out.
